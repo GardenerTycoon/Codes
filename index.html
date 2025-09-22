@@ -138,7 +138,6 @@ async function loadCodes() {
   data.forEach(item => {
     let isExpired = false;
 
-    // Sprawdzenie daty wygaśnięcia
     if (item.expired && item.expired !== false) {
       const expDate = new Date(item.expired);
       if (expDate < today) isExpired = true;
@@ -146,10 +145,37 @@ async function loadCodes() {
 
     if (!item.expired || item.expired === false || !isExpired) {
       // Aktywne kody
-      activeBody.innerHTML += `<tr><td>${item.code}</td><td>${item.reward}</td></tr>`;
+      const tr = document.createElement("tr");
+
+      const tdCode = document.createElement("td");
+      tdCode.textContent = item.code;
+      tdCode.setAttribute("translate", "no"); // kolumna kodu nie tłumaczona
+      tr.appendChild(tdCode);
+
+      const tdReward = document.createElement("td");
+      tdReward.textContent = item.reward; // nagroda może być tłumaczona
+      tr.appendChild(tdReward);
+
+      activeBody.appendChild(tr);
     } else {
       // Wygasłe kody
-      expiredBody.innerHTML += `<tr><td>${item.code}</td><td>${item.reward}</td><td class="date">${item.expired}</td></tr>`;
+      const tr = document.createElement("tr");
+
+      const tdCode = document.createElement("td");
+      tdCode.textContent = item.code;
+      tdCode.setAttribute("translate", "no"); // kod nie tłumaczony
+      tr.appendChild(tdCode);
+
+      const tdReward = document.createElement("td");
+      tdReward.textContent = item.reward;
+      tr.appendChild(tdReward);
+
+      const tdDate = document.createElement("td");
+      tdDate.textContent = item.expired;
+      tdDate.classList.add("date");
+      tr.appendChild(tdDate);
+
+      expiredBody.appendChild(tr);
     }
   });
 }
