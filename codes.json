@@ -4,6 +4,6 @@
   { "code": "FreeGems", "reward": "10 Gems", "expired": false },
   { "code": "Garden", "reward": "250 Money", "expired": false },
   { "code": "Start", "reward": "500 Money", "expired": false },
-  { "code": "Test", "reward": "20 Gems", "expired": "22-09-2025" },
-  { "code": "Code", "reward": "100 Money", "expired": "22-09-2025" }
+  { "code": "Test", "reward": "20 Gems", "expired": "2025-09-22" },
+  { "code": "Code", "reward": "100 Money", "expired": "2025-09-22" }
 ]
