@@ -123,84 +123,88 @@
 
   </main>
   <script>
-async function loadCodes() {
-  const response = await fetch("codes.json");
-  const data = await response.json();
-
-  const activeBody = document.querySelector(".active tbody");
-  const expiredBody = document.querySelector(".expired tbody");
-
-  // Wyczyść stare wiersze
-  activeBody.innerHTML = "";
-  expiredBody.innerHTML = "";
-
-  const today = new Date();
-
-  data.forEach(item => {
-    let isExpired = false;
-
-    if (item.expired && item.expired !== false) {
-      const expDate = new Date(item.expired);
-      if (expDate < today) isExpired = true;
-    }
-
-    if (!item.expired || item.expired === false || !isExpired) {
-      // Aktywne kody
-      const tr = document.createElement("tr");
-
-      function formatDate(dateStr) {
+// Funkcja do formatowania daty (YYYY-MM-DD → DD-MM-YYYY)
+function formatDate(dateStr) {
   const d = new Date(dateStr);
+  if (isNaN(d)) return dateStr; // jakby JSON miał dziwny format
   const day = String(d.getDate()).padStart(2, "0");
-  const month = String(d.getMonth() + 1).padStart(2, "0"); // miesiące w JS liczą się od 0
+  const month = String(d.getMonth() + 1).padStart(2, "0");
   const year = d.getFullYear();
   return `${day}-${month}-${year}`;
 }
 
-// ...
+// Główna funkcja ładująca kody z JSON
+async function loadCodes() {
+  try {
+    const response = await fetch("codes.json");
+    const data = await response.json();
 
-const tdDate = document.createElement("td");
-tdDate.textContent = formatDate(item.expired); // <-- tu już konwertujemy
-tdDate.classList.add("date");
-tr.appendChild(tdDate);
+    const activeBody = document.querySelector(".active tbody");
+    const expiredBody = document.querySelector(".expired tbody");
 
+    // Wyczyść stare wiersze
+    activeBody.innerHTML = "";
+    expiredBody.innerHTML = "";
 
-      const tdReward = document.createElement("td");
-      tdReward.textContent = item.reward; // nagroda może być tłumaczona
-      tr.appendChild(tdReward);
+    const today = new Date();
 
-      activeBody.appendChild(tr);
-    } else {
-      // Wygasłe kody
-      const tr = document.createElement("tr");
+    data.forEach(item => {
+      let isExpired = false;
 
-      const tdCode = document.createElement("td");
-      tdCode.textContent = item.code;
-      tdCode.setAttribute("translate", "no"); // kod nie tłumaczony
-      tr.appendChild(tdCode);
+      if (item.expired && item.expired !== false) {
+        const expDate = new Date(item.expired);
+        if (expDate < today) isExpired = true;
+      }
 
-      const tdReward = document.createElement("td");
-      tdReward.textContent = item.reward;
-      tr.appendChild(tdReward);
+      if (!item.expired || item.expired === false || !isExpired) {
+        // --- Aktywne kody ---
+        const tr = document.createElement("tr");
 
-      const tdDate = document.createElement("td");
-      tdDate.textContent = item.expired;
-      tdDate.classList.add("date");
-      tr.appendChild(tdDate);
+        const tdCode = document.createElement("td");
+        tdCode.textContent = item.code;
+        tdCode.setAttribute("translate", "no");
+        tr.appendChild(tdCode);
 
-      expiredBody.appendChild(tr);
-    }
-  });
+        const tdReward = document.createElement("td");
+        tdReward.textContent = item.reward;
+        tr.appendChild(tdReward);
+
+        activeBody.appendChild(tr);
+      } else {
+        // --- Wygasłe kody ---
+        const tr = document.createElement("tr");
+
+        const tdCode = document.createElement("td");
+        tdCode.textContent = item.code;
+        tdCode.setAttribute("translate", "no");
+        tr.appendChild(tdCode);
+
+        const tdReward = document.createElement("td");
+        tdReward.textContent = item.reward;
+        tr.appendChild(tdReward);
+
+        const tdDate = document.createElement("td");
+        tdDate.textContent = formatDate(item.expired);
+        tdDate.classList.add("date");
+        tr.appendChild(tdDate);
+
+        expiredBody.appendChild(tr);
+      }
+    });
+  } catch (error) {
+    console.error("Błąd wczytywania JSON:", error);
+  }
 }
+
 // Zabronienie tłumaczenia tytułu gry w h1
 window.addEventListener("DOMContentLoaded", () => {
   const gameTitle = document.querySelector("header h1");
   if (gameTitle) {
     gameTitle.setAttribute("translate", "no");
   }
+  loadCodes(); // uruchomienie ładowania kodów
 });
 
-// Uruchomienie po załadowaniu strony
-window.addEventListener("DOMContentLoaded", loadCodes);
 </script>
 </body>
 </html>
