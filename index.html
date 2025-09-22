@@ -114,8 +114,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td>...</td><td>...</td><td class="date">2025-08-01</td></tr>
-      <tr><td>...</td><td>...</td><td class="date">2025-08-15</td></tr>
+      <tr><td>...</td><td>...</td><td class="date">00-00-0000</td></tr>
+      <tr><td>...</td><td>...</td><td class="date">00-00-0000</td></tr>
     </tbody>
   </table>
 </section>
@@ -147,10 +147,21 @@ async function loadCodes() {
       // Aktywne kody
       const tr = document.createElement("tr");
 
-      const tdCode = document.createElement("td");
-      tdCode.textContent = item.code;
-      tdCode.setAttribute("translate", "no"); // kolumna kodu nie tłumaczona
-      tr.appendChild(tdCode);
+      function formatDate(dateStr) {
+  const d = new Date(dateStr);
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0"); // miesiące w JS liczą się od 0
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
+// ...
+
+const tdDate = document.createElement("td");
+tdDate.textContent = formatDate(item.expired); // <-- tu już konwertujemy
+tdDate.classList.add("date");
+tr.appendChild(tdDate);
+
 
       const tdReward = document.createElement("td");
       tdReward.textContent = item.reward; // nagroda może być tłumaczona
