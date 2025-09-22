@@ -121,5 +121,41 @@
 </section>
 
   </main>
+  <script>
+async function loadCodes() {
+  const response = await fetch("codes.json");
+  const data = await response.json();
+
+  const activeBody = document.querySelector(".active tbody");
+  const expiredBody = document.querySelector(".expired tbody");
+
+  // Wyczyść stare wiersze
+  activeBody.innerHTML = "";
+  expiredBody.innerHTML = "";
+
+  const today = new Date();
+
+  data.forEach(item => {
+    let isExpired = false;
+
+    // Sprawdzenie daty wygaśnięcia
+    if (item.expired && item.expired !== false) {
+      const expDate = new Date(item.expired);
+      if (expDate < today) isExpired = true;
+    }
+
+    if (!item.expired || item.expired === false || !isExpired) {
+      // Aktywne kody
+      activeBody.innerHTML += `<tr><td>${item.code}</td><td>${item.reward}</td></tr>`;
+    } else {
+      // Wygasłe kody
+      expiredBody.innerHTML += `<tr><td>${item.code}</td><td>${item.reward}</td><td class="date">${item.expired}</td></tr>`;
+    }
+  });
+}
+
+// Uruchomienie po załadowaniu strony
+window.addEventListener("DOMContentLoaded", loadCodes);
+</script>
 </body>
 </html>
