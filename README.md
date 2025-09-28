@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://www.roblox.com/share?code=54333ff9a2204d4d8f0dc01b36c5d40a&type=ExperienceDetails&stamp=1759063305969">
+  <a href="https://gardenertycoon.github.io/Codes/">
     <img src="favicon.png" alt="Gardener Tycoon Logo" width="128">
   </a>
 </p>
@@ -23,6 +23,8 @@ Stay tuned – new codes appear during updates and special events!
 
 🎮 You can find the game >[HERE](https://www.roblox.com/share?code=54333ff9a2204d4d8f0dc01b36c5d40a&type=ExperienceDetails&stamp=1759063305969)<  
 
+## Click on the game logo at the top to go to the code page!
+
 ---
 
 ## 🇵🇱 Polska Wersja (PL)
@@ -40,4 +42,5 @@ Dzięki nim zdobędziesz **pieniądze, klejnoty, nasiona** i wiele innych nagró
 
 🎮 Grę znajdziesz >[TUTAJ](https://www.roblox.com/share?code=54333ff9a2204d4d8f0dc01b36c5d40a&type=ExperienceDetails&stamp=1759063305969)<  
 
+## Kliknij na logo gry na górze, aby przejść do strony z kodami!
 ---
