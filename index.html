@@ -12,6 +12,9 @@
       margin: 0;
       background: #f3fdf6;
       color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
     header {
       background: #2f855a;
@@ -29,10 +32,15 @@
       justify-content: center;
       gap: 0.5rem;
     }
+    header h1 a {
+      color: #fff;
+      text-decoration: none;
+    }
     header h1 i {
       color: #d4f5e9;
     }
     main {
+      flex: 1;
       max-width: 900px;
       margin: 2rem auto;
       padding: 0 1rem;
@@ -83,12 +91,48 @@
       color: #666;
       font-size: 0.9rem;
     }
+    .game-link {
+      display: block;
+      text-align: center;
+      margin: 2rem 0;
+      font-size: 1.2rem;
+    }
+    .game-link a {
+      background: #2f855a;
+      color: #fff;
+      text-decoration: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background 0.2s;
+    }
+    .game-link a:hover {
+      background: #276749;
+    }
+    footer {
+      background: #2f855a;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+    footer p {
+      margin: 0.3rem 0;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1 no><i class="fas fa-leaf"></i> Gardener Tycoon</h1>
-  </header>  <main>
+    <h1 translate="no">
+      <i class="fas fa-leaf"></i>
+      <a href="https://www.roblox.com/share?code=54333ff9a2204d4d8f0dc01b36c5d40a&type=ExperienceDetails&stamp=1759063305969" target="_blank">
+        Gardener Tycoon
+      </a>
+    </h1>
+  </header>
+
+  <main>
     <section class="active">
       <h2><i class="fas fa-check-circle"></i> Active Codes</h2>
       <table>
@@ -104,107 +148,98 @@
           <tr><td>...</td><td>...</td></tr>
         </tbody>
       </table>
-    </section><section class="expired">
-  <h2><i class="fas fa-times-circle"></i> Expired Codes</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Reward</th>
-        <th>Expired</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>...</td><td>...</td><td class="date">00-00-0000</td></tr>
-      <tr><td>...</td><td>...</td><td class="date">00-00-0000</td></tr>
-    </tbody>
-  </table>
-</section>
+    </section>
 
+    <section class="expired">
+      <h2><i class="fas fa-times-circle"></i> Expired Codes</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Reward</th>
+            <th>Expired</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>...</td><td>...</td><td class="date">00-00-0000</td></tr>
+          <tr><td>...</td><td>...</td><td class="date">00-00-0000</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="game-link">
+      🎮 Play the game here → 
+      <a href="https://www.roblox.com/share?code=54333ff9a2204d4d8f0dc01b36c5d40a&type=ExperienceDetails&stamp=1759063305969" target="_blank">
+        CLICK TO PLAY
+      </a>
+    </div>
   </main>
+
+  <footer>
+    <p>
+      © Gardener Tycoon. All rights reserved. This website, its content, and all related materials 
+      are the intellectual property of <strong>ProYeti / mateuszmamrob</strong>.
+    </p>
+    <p>
+      Unauthorized copying, distribution, or modification of any part of this page 
+      without explicit permission from the author is strictly prohibited.
+    </p>
+    <p>
+      By using this site, you agree to respect the creator’s rights and acknowledge 
+      that all trademarks and game assets remain the property of their respective owners.
+    </p>
+  </footer>
+
   <script>
-// Funkcja do formatowania daty (YYYY-MM-DD → DD-MM-YYYY)
-function formatDate(dateStr) {
-  const d = new Date(dateStr);
-  if (isNaN(d)) return dateStr; // jakby JSON miał dziwny format
-  const day = String(d.getDate()).padStart(2, "0");
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const year = d.getFullYear();
-  return `${day}-${month}-${year}`;
-}
-
-// Główna funkcja ładująca kody z JSON
-async function loadCodes() {
-  try {
-    const response = await fetch("codes.json");
-    const data = await response.json();
-
-    const activeBody = document.querySelector(".active tbody");
-    const expiredBody = document.querySelector(".expired tbody");
-
-    // Wyczyść stare wiersze
-    activeBody.innerHTML = "";
-    expiredBody.innerHTML = "";
-
-    const today = new Date();
-
-    data.forEach(item => {
-      let isExpired = false;
-
-      if (item.expired && item.expired !== false) {
-        const expDate = new Date(item.expired);
-        if (expDate < today) isExpired = true;
-      }
-
-      if (!item.expired || item.expired === false || !isExpired) {
-        // --- Aktywne kody ---
-        const tr = document.createElement("tr");
-
-        const tdCode = document.createElement("td");
-        tdCode.textContent = item.code;
-        tdCode.setAttribute("translate", "no");
-        tr.appendChild(tdCode);
-
-        const tdReward = document.createElement("td");
-        tdReward.textContent = item.reward;
-        tr.appendChild(tdReward);
-
-        activeBody.appendChild(tr);
-      } else {
-        // --- Wygasłe kody ---
-        const tr = document.createElement("tr");
-
-        const tdCode = document.createElement("td");
-        tdCode.textContent = item.code;
-        tdCode.setAttribute("translate", "no");
-        tr.appendChild(tdCode);
-
-        const tdReward = document.createElement("td");
-        tdReward.textContent = item.reward;
-        tr.appendChild(tdReward);
-
-        const tdDate = document.createElement("td");
-        tdDate.textContent = formatDate(item.expired);
-        tdDate.classList.add("date");
-        tr.appendChild(tdDate);
-
-        expiredBody.appendChild(tr);
-      }
-    });
-  } catch (error) {
-    console.error("Błąd wczytywania JSON:", error);
+  // Format date (YYYY-MM-DD → DD-MM-YYYY)
+  function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr;
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
   }
-}
 
-// Zabronienie tłumaczenia tytułu gry w h1
-window.addEventListener("DOMContentLoaded", () => {
-  const gameTitle = document.querySelector("header h1");
-  if (gameTitle) {
-    gameTitle.setAttribute("translate", "no");
+  async function loadCodes() {
+    try {
+      const response = await fetch("codes.json");
+      const data = await response.json();
+
+      const activeBody = document.querySelector(".active tbody");
+      const expiredBody = document.querySelector(".expired tbody");
+
+      activeBody.innerHTML = "";
+      expiredBody.innerHTML = "";
+
+      const today = new Date();
+
+      data.forEach(item => {
+        let isExpired = false;
+
+        if (item.expired && item.expired !== false) {
+          const expDate = new Date(item.expired);
+          if (expDate < today) isExpired = true;
+        }
+
+        if (!item.expired || item.expired === false || !isExpired) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td translate="no">${item.code}</td><td>${item.reward}</td>`;
+          activeBody.appendChild(tr);
+        } else {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td translate="no">${item.code}</td><td>${item.reward}</td><td class="date">${formatDate(item.expired)}</td>`;
+          expiredBody.appendChild(tr);
+        }
+      });
+    } catch (error) {
+      console.error("Error loading JSON:", error);
+    }
   }
-  loadCodes(); // uruchomienie ładowania kodów
-});
 
-</script>
+  window.addEventListener("DOMContentLoaded", () => {
+    loadCodes();
+  });
+  </script>
 </body>
 </html>
